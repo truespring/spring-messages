@@ -1,4 +1,4 @@
-package com.truespring.messages.app;
+package com.truespring.messages.app.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,8 +1,11 @@
-package com.truespring.messages.app;
+package com.truespring.messages.app.domain.repository;
 
+import com.truespring.messages.app.domain.Message;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 @Slf4j
+@Component
 public class MessageRepository {
 
     public void saveMessage(Message message) {

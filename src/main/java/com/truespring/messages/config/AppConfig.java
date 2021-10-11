@@ -1,22 +1,22 @@
 package com.truespring.messages.config;
 
-import com.truespring.messages.app.MessageRepository;
-import com.truespring.messages.app.MessageService;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.Arrays;
+
 @Configuration
 @ComponentScan("com.truespring.messages.app")
 public class AppConfig {
-
     @Bean
-    public MessageRepository messageRepository() {
-        return new MessageRepository();
-    }
-
-    @Bean
-    MessageService messageService() {
-        return new MessageService(messageRepository());
+    public FilterRegistrationBean<AuditingFilter>auditingFilterFilterRegistrationBean() {
+        FilterRegistrationBean<AuditingFilter> registration = new FilterRegistrationBean<>();
+        AuditingFilter filter = new AuditingFilter();
+        registration.setFilter(filter);
+        registration.setOrder(Integer.MAX_VALUE);
+        registration.setUrlPatterns(Arrays.asList("/messages/*"));
+        return registration;
     }
 }
