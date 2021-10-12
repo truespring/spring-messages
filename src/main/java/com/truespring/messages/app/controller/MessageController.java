@@ -1,15 +1,30 @@
 package com.truespring.messages.app.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.truespring.messages.app.domain.Message;
+import com.truespring.messages.app.domain.MessageData;
+import com.truespring.messages.app.service.MessageService;
+import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/messages")
+@AllArgsConstructor
+@RequestMapping("/v1")
 public class MessageController {
+
+    private MessageService messageService;
 
     @GetMapping("/welcome")
     public String welcome() {
         return "Hello, Welcome to String Boot!";
+    }
+
+    @PostMapping("/messages")
+    public ResponseEntity<Message> saveMessage(@RequestBody MessageData data) {
+        Message saved = messageService.save(data.getText());
+        if (saved == null) {
+            return ResponseEntity.status(500).build();
+        }
+        return ResponseEntity.ok(saved);
     }
 }

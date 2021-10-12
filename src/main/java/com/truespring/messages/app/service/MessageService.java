@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 public class MessageService {
     private MessageRepository messageRepository;
 
-    public void save(String text) {
-        this.messageRepository.saveMessage(new Message(text));
+    public Message save(String text) {
+        return messageRepository.saveMessage(new Message(text));
     }
 }
