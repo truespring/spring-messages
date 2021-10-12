@@ -6,3 +6,7 @@
 
 > 설치 링크: [블로그](https://lifeinprogram.tistory.com/21) 
 
+### 주의!! <br>
+> yml 성정 시 mysql 버전업이 됨에 따라 기존<br>
+driver-class-name: com.mysql.jdbc.Driver ->
+driver-class-name: com.mysql.cj.jdbc.Driver 로 변경되었다.
