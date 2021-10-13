@@ -2,49 +2,53 @@ package com.truespring.messages.app.domain.repository;
 
 import com.truespring.messages.app.domain.Message;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.datasource.DataSourceUtils;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Component;
-
-import javax.sql.DataSource;
-import java.sql.*;
-import java.util.Objects;
 
 @Slf4j
 @Component
 public class MessageRepository {
 
-    private final DataSource dataSource;
-    private NamedParameterJdbcTemplate jdbcTemplate;
+    private SessionFactory sessionFactory;
 
-    @Autowired
-    public void setDataSource(DataSource dataSource) {
-        this.jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+    public MessageRepository(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
     }
 
-    public MessageRepository(DataSource dataSource) {
-        this.dataSource = dataSource;
+    public Message saveMessage(Message message) {
+        Session session = sessionFactory.openSession();
+        session.save(message);
+        return message;
     }
+
+//    private final DataSource dataSource;
+//    private NamedParameterJdbcTemplate jdbcTemplate;
+//
+//    @Autowired
+//    public void setDataSource(DataSource dataSource) {
+//        this.jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+//    }
+//
+//    public MessageRepository(DataSource dataSource) {
+//        this.dataSource = dataSource;
+//    }
 
     // 스프링 JDBC를 사용한 메소드
-    public Message saveMessage(Message message) {
-        GeneratedKeyHolder holder = new GeneratedKeyHolder();
-        MapSqlParameterSource params = new MapSqlParameterSource();
-        params.addValue("text", message.getText());
-        params.addValue("createdDate", message.getCreatedDate());
-        String insertSQL = "INSERT INTO messages (`id`, `text`, `created_date`) VALUE (null, :text, :createdDate)";
-        try {
-            this.jdbcTemplate.update(insertSQL, params, holder);
-        } catch (DataAccessException e) {
-            log.error("Failed to save message", e);
-            return null;
-        }
-        return new Message(Objects.requireNonNull(holder.getKey()).intValue(), message.getText(), message.getCreatedDate());
-    }
+//    public Message saveMessage(Message message) {
+//        GeneratedKeyHolder holder = new GeneratedKeyHolder();
+//        MapSqlParameterSource params = new MapSqlParameterSource();
+//        params.addValue("text", message.getText());
+//        params.addValue("createdDate", message.getCreatedDate());
+//        String insertSQL = "INSERT INTO messages (`id`, `text`, `created_date`) VALUE (null, :text, :createdDate)";
+//        try {
+//            this.jdbcTemplate.update(insertSQL, params, holder);
+//        } catch (DataAccessException e) {
+//            log.error("Failed to save message", e);
+//            return null;
+//        }
+//        return new Message(Objects.requireNonNull(holder.getKey()).intValue(), message.getText(), message.getCreatedDate());
+//    }
 
     // JDBC API를 직접 사용해 상호작용한 메소드
 //    public Message saveMessage(Message message) {
