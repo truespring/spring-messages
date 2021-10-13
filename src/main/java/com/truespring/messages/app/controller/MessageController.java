@@ -23,6 +23,7 @@ public class MessageController {
 
     @PostMapping("/messages")
     public ResponseEntity<Message> saveMessage(@RequestBody MessageData data) {
+
         log.info(">> MessageData Text :: {}", data.getText());
         Message saved = messageService.save(data.getText());
         if (saved == null) {

@@ -2,6 +2,7 @@ package com.truespring.messages.app.service;
 
 import com.truespring.messages.app.domain.Message;
 import com.truespring.messages.app.domain.repository.MessageRepository;
+import com.truespring.messages.secure.SecurityCheck;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Component;
 public class MessageService {
     private MessageRepository messageRepository;
 
+    @SecurityCheck
     public Message save(String text) {
         return messageRepository.saveMessage(new Message(text));
     }
