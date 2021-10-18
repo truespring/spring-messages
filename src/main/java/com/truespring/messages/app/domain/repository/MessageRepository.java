@@ -10,14 +10,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class MessageRepository {
 
-    private SessionFactory sessionFactory;
+    private final SessionFactory sessionFactory;
 
     public MessageRepository(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
 
     public Message saveMessage(Message message) {
-        Session session = sessionFactory.openSession();
+        Session session = sessionFactory.getCurrentSession();
         session.save(message);
         return message;
     }
