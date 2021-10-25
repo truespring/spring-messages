@@ -4,7 +4,10 @@ import com.truespring.messages.app.domain.Message;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Slf4j
 @Component
@@ -20,6 +23,13 @@ public class MessageRepository {
         Session session = sessionFactory.getCurrentSession();
         session.save(message);
         return message;
+    }
+
+    public List<Message> getMessages() {
+        Session session = sessionFactory.getCurrentSession();
+        String hql = "from Message";
+        Query<Message> query = session.createQuery(hql, Message.class);
+        return query.list();
     }
 
 //    private final DataSource dataSource;

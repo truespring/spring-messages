@@ -8,6 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Slf4j
 @Component
 @AllArgsConstructor
@@ -19,8 +21,13 @@ public class MessageService {
     public Message save(String text) {
         Message message = messageRepository.saveMessage(new Message(text));
         log.debug("New Message[id={}] saved", message.getId());
-        updateStatistics();
+//        updateStatistics();
         return message;
+    }
+
+    @Transactional(readOnly = true)
+    public List<Message> getMessages() {
+        return messageRepository.getMessages();
     }
 
     private void updateStatistics() {
